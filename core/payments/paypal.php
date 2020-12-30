@@ -20,4 +20,32 @@ else exit(); // return error
 //PayPal configs
 require $path  . '/vendor/autoload.php';
 
+use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\SandboxEnvironment;
+$clientId = $paypal_clientid;
+$clientSecret = $paypal_secretid;
+
+$environment = new SandboxEnvironment($clientId, $clientSecret);
+$client = new PayPalHttpClient($environment);
+
+use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
+$request = new OrdersCreateRequest();
+$request->prefer('return=representation');
+$request->body = [
+                     "intent" => "CAPTURE",
+                     "purchase_units" => [[
+                         "reference_id" => "test_ref_id1",
+                         "amount" => [
+                             "value" => $_Paymentprice,
+                             "currency_code" => "USD"
+                         ]
+                     ]],
+                     "application_context" => [
+                          "cancel_url" => $url_returnapproved,
+                          "return_url" => $url_returncancelled
+                     ] 
+                 ];
+
+$response = $client->execute($request);
+if($response->statusCode == 201) header("Location:".$response->result->links[1]->href);
 ?>
