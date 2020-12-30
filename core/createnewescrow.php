@@ -1,6 +1,8 @@
 <?PHP
 session_start();
-include_once('../conf/escrowconfig.php');
+$path = $_SERVER['DOCUMENT_ROOT'];
+$path .= "/config/escrowconfig.php";
+include_once($path);
 $username = $_SESSION['nickname'];
 $seller = $_POST['escrowdata_login'];
 $price = $_POST['escrowdata_price'];

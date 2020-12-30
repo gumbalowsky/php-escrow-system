@@ -9,9 +9,9 @@
     <?PHP
     session_start();
         if(isset($_SESSION['nickname']))
-            include_once('adds/pages/escrow.php');
+            include_once('core/escrow.php');
         else
-            include_once('adds/pages/login.php');
+            include_once('auth/login.php');
     ?>
     </body>
 </html>

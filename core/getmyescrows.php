@@ -1,5 +1,7 @@
 <?php
-include_once('adds/conf/escrowconfig.php');
+$path = $_SERVER['DOCUMENT_ROOT'];
+$path .= "/config/escrowconfig.php";
+include_once($path);
 $username = $_SESSION['nickname'];
 $sql = "SELECT * FROM escrows WHERE buyer='".$username."'";
 $sql = $db->query($sql);
