@@ -1,6 +1,6 @@
 <?php
 $path = $_SERVER['DOCUMENT_ROOT'];
-require $path  . '/vendor/autoload.php';
+
 require $path . '/config/siteconfig.php';
 
 //Sql data
@@ -18,42 +18,6 @@ else exit(); // return error
 
 
 //PayPal configs
-$apiContext = new \PayPal\Rest\ApiContext(
-    new \PayPal\Auth\OAuthTokenCredential(
-        $paypal_clientid,
-        $paypal_secretid
-    )
-);
-$payer = new \PayPal\Api\Payer();
-$payer->setPaymentMethod('paypal');
-
-$amount = new \PayPal\Api\Amount();
-$amount->setTotal($_Paymentprice);
-$amount->setCurrency('USD');
-
-$transaction = new \PayPal\Api\Transaction();
-$transaction->setAmount($amount);
-
-$redirectUrls = new \PayPal\Api\RedirectUrls();
-$redirectUrls->setReturnUrl($url_returnapproved)
-    ->setCancelUrl($url_returncancelled);
-
-$payment = new \PayPal\Api\Payment();
-$payment->setIntent('sale')
-    ->setPayer($payer)
-    ->setTransactions(array($transaction))
-    ->setRedirectUrls($redirectUrls);
-
-
-
-
-//PAYPAL CALL
-try {
-    $payment->create($apiContext);
-    header("Location:".$payment->getApprovalLink());
-}
-catch (\PayPal\Exception\PayPalConnectionException $ex) {
-    echo $ex->getData();
-}
+require $path  . '/vendor/autoload.php';
 
 ?>

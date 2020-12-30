@@ -1,5 +1,6 @@
 <?php
 $path = $_SERVER['DOCUMENT_ROOT'];
+include_once($path.'/config/databaseconfig.php');
 $path .= "/config/escrowconfig.php";
 include_once($path);
 $username = $_SESSION['nickname'];
@@ -14,7 +15,7 @@ if($sql->num_rows > 0)
         echo "Escrow no.".$row['id'].": <b>Seller:</b>".$row['seller']." <b>Price:</b>".$row['price']."$ <b>Payment:</b>";
         if($row['paid'] == 0) 
         {
-            echo 'Pay for it here: <form action="/core/payments/paypal.php" method="post">
+            echo '<form action="/core/payments/paypal.php" method="post">
             <input type="hidden" value="'.$row['id'].'" name="paypaldata_id">
             <input type="submit" value="Pay with PayPal"></form><br/>';
         }

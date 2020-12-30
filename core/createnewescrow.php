@@ -1,6 +1,7 @@
 <?PHP
 session_start();
 $path = $_SERVER['DOCUMENT_ROOT'];
+include_once($path.'/config/databaseconfig.php');
 $path .= "/config/escrowconfig.php";
 include_once($path);
 $username = $_SESSION['nickname'];
