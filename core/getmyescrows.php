@@ -29,8 +29,7 @@ if($sql->num_rows > 0)
     echo "<br/><b>Your escrows as seller:</b></br>";
     while($row = $sql->fetch_assoc())
     {
-        echo "Escrow no.".$row['id']." Description:".$row['description']."<br/>Price ".$row['buyer']." wish to pay: ".$row['price']."<br/>
-        Paid: ".$row['paid_price']."$ out of ".$row['price']."$<br/>";
+        echo "Escrow no.".$row['id']." Description:".$row['description']."<br/>Price ".$row['buyer']." wish to pay: ".$row['price']."<br/>";
         echo '<form action="adds/pages/accept_escrow.php" method="post">
             <input type="hidden" value="'.$row['id'].'" name="escrowdata_id">
             <input type="submit" value="Accept">

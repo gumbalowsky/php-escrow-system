@@ -2,7 +2,6 @@
 $path = $_SERVER['DOCUMENT_ROOT'];
 
 require $path . '/config/siteconfig.php';
-
 //Sql data
 $_ESCROWid = $_POST['paypaldata_id'];
 if($_ESCROWid == null OR $_ESCROWid == 0) exit(); // return error
@@ -34,18 +33,23 @@ $request->prefer('return=representation');
 $request->body = [
                      "intent" => "CAPTURE",
                      "purchase_units" => [[
-                         "reference_id" => "test_ref_id1",
                          "amount" => [
                              "value" => $_Paymentprice,
                              "currency_code" => "USD"
                          ]
                      ]],
                      "application_context" => [
-                          "cancel_url" => $url_returnapproved,
-                          "return_url" => $url_returncancelled
+                          "cancel_url" => $url_returncancelled,
+                          "return_url" => $url_returnapproved.'?id='.$_ESCROWid
                      ] 
                  ];
 
 $response = $client->execute($request);
-if($response->statusCode == 201) header("Location:".$response->result->links[1]->href);
+if($response->statusCode == 201) 
+{
+    $paymentID = $response->result->id;
+    $sql = "INSERT INTO payments VALUES (NULL,'".$paymentID."','".$_ESCROWid."')";
+    if($db->query($sql))
+    header("Location:".$response->result->links[1]->href);
+}
 ?>
