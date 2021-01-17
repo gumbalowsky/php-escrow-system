@@ -12,6 +12,7 @@ if($sql->num_rows > 0)
     echo "<br/><b>Your escrows as buyer:</b><br/>";
     while($row = $sql->fetch_assoc())
     {
+        if($row['status']=='4') continue;
         echo "Escrow no.".$row['id'].": <b>Seller:</b>".$row['seller']." <b>Price:</b>".$row['price']."$ <b>Payment:</b>";
         if($row['paid'] == 0) 
         {
@@ -20,6 +21,12 @@ if($sql->num_rows > 0)
             <input type="submit" value="Pay with PayPal"></form><br/>';
         }
         else echo "Received<br/>";
+        echo "Status:";
+        if($row['status']=='1') echo "Awaiting for escrow seller to accept your offer.";
+        else if($row['status']=='2') echo "Escrow seller accepted your offer.";
+        else if($row['status']=='3') echo 'Completed. <form action="/core/escrowcomplete.php" method="post">
+        <input type="hidden" value="'.$row['id'].'" name="escrowdata_id">
+        <input type="submit" value="Close Escrow"></form><br/>';
     }
 }
 $sql = "SELECT * FROM escrows WHERE seller='".$username."' AND status='1'";
